@@ -1,10 +1,12 @@
-import { Live2DModel, config } from 'pixi-live2d-display-lipsyncpatch/cubism4';
-import { Application, Ticker } from 'pixi.js';
-
-Live2DModel.registerTicker(Ticker);
-// extensions.add(TickerPlugin);
-// extensions.add({ type: ExtensionType.RendererPlugin, name: 'interaction', ref: InteractionManager });
-config.sound = false;
+/** npm package import
+ * If you use the script tag to import， you must comment this paragraph
+ */
+import { Live2DModel } from 'pixi-live2d-display-lipsyncpatch/cubism4';
+import * as PIXI from 'pixi.js';
+window.PIXI = PIXI;
+/**
+ * End: npm package import
+ */
 
 const cubism4ModelURL = './live2d-haru/haru_greeter_t03.model3.json';
 
@@ -12,7 +14,7 @@ export default async function initLive2DModel() {
   const canvasEl = document.getElementById('live2d-canvas') as HTMLCanvasElement;
   const containerEl = document.getElementById('live2d-container') as HTMLDivElement;
 
-  const app = new Application({
+  const app = new window.PIXI.Application({
     view: canvasEl,
     autoStart: true,
     resizeTo: containerEl,
@@ -23,10 +25,14 @@ export default async function initLive2DModel() {
     // antialias: true, // 抗锯齿
   });
 
+  /** npm package import */
   const model4 = await Live2DModel.from(cubism4ModelURL, {
-    /** 自动交互 */
     autoInteract: true,
   });
+  /** Script Tag Import */
+  // const model4 = await window.PIXI.live2d.Live2DModel.from(cubism4ModelURL, {
+  //   autoInteract: true,
+  // });
 
   const resizeModel = () => {
     const canvas = canvasEl;
@@ -51,11 +57,11 @@ export default async function initLive2DModel() {
   app.stage.addChild(model4);
 
   // interaction
-  model4.on('hit', hitAreas => {
-    if (hitAreas.includes('body')) {
-      model4.motion('tap_body');
-    }
-  });
+  // model4.on('hit', hitAreas => {
+  //   if (hitAreas.includes('body')) {
+  //     model4.motion('tap_body');
+  //   }
+  // });
 
   return model4;
 }
