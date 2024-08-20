@@ -2,11 +2,13 @@
  * If you use the script tag to import， you must comment this paragraph
  */
 import { Live2DModel } from 'pixi-live2d-display-lipsyncpatch/cubism4';
-import * as PIXI from 'pixi.js';
-window.PIXI = PIXI;
+import { Application, Ticker } from 'pixi.js';
+// import * as PIXI from 'pixi.js';
+// window.PIXI = PIXI;
 /**
  * End: npm package import
  */
+// Live2DModel.registerTicker(Ticker);
 
 const cubism4ModelURL = './live2d-haru/haru_greeter_t03.model3.json';
 
@@ -14,7 +16,7 @@ export default async function initLive2DModel() {
   const canvasEl = document.getElementById('live2d-canvas') as HTMLCanvasElement;
   const containerEl = document.getElementById('live2d-container') as HTMLDivElement;
 
-  const app = new window.PIXI.Application({
+  const app = new Application({
     view: canvasEl,
     autoStart: true,
     resizeTo: containerEl,
@@ -27,11 +29,13 @@ export default async function initLive2DModel() {
 
   /** npm package import */
   const model4 = await Live2DModel.from(cubism4ModelURL, {
-    autoInteract: true,
+    ticker: Ticker.shared,
+    // autoInteract: true,
+    autoFocus: true,
   });
   /** Script Tag Import */
   // const model4 = await window.PIXI.live2d.Live2DModel.from(cubism4ModelURL, {
-  //   autoInteract: true,
+  //   autoFocus: true,
   // });
 
   const resizeModel = () => {
